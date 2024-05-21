@@ -7,6 +7,6 @@ namespace Book_store_1_.DTOs
 
         public string? Password{set; get;}
 
-        public ushort Number_Of_borrowedBooks{set; get;}
+        public ushort NumberOfborrowedBooks{set; get;}
     }
 }

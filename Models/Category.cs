@@ -11,11 +11,11 @@ namespace Book_store_1_.Models
 
         // adding attributes
         [Key]
-        public byte Category_Id{set; get;}
+        public byte CategoryId{set; get;}
 
         // adding constrain 
         [MaxLength(100)]
-        public string? Category_Name{set; get;}
+        public string? CategoryName{set; get;}
         // public int Id { get; internal set; }
 
         // write this to allow us to access all books for specific category 

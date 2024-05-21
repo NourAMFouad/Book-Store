@@ -4,10 +4,10 @@ namespace Book_store_1_.DTOs
     {
         public int BookId{set; get;}
         
-        public int User_Id {set; get;}
+        public int UserId {set; get;}
       
-        public DateTime Borrow_date {set; get;}
+        public DateTime BorrowDate {set; get;}
 
-        public DateTime Return_date {set; get;}
+        public DateTime ReturnDate {set; get;}
     }
 }

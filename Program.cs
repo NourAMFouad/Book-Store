@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Book_store_1_.Controllers;
+using Book_store_1_.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +15,14 @@ builder.Services.AddSwaggerGen();
 
 // Registration of services for database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// adding refrences 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+
+// Register repositories
+builder.Services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+
 
 var app = builder.Build();
 

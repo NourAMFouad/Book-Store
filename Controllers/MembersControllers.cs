@@ -32,7 +32,7 @@ namespace Book_store_1_.Controllers
             var Member = new Member {
                 Username = dto.Username,
                 Password = dto.Password,
-                Number_Of_borrowedBooks = dto.Number_Of_borrowedBooks
+                NumberOfborrowedBooks = dto.NumberOfborrowedBooks
             };
 
             await _context.AddAsync(Member);

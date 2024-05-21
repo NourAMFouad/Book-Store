@@ -32,7 +32,7 @@ namespace Book_store_1_.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewCategory(Categorydto categoryDto){
             // create new instance from dto 
-            var category = new Category { Category_Name = categoryDto.Name} ;
+            var category = new Category { CategoryName = categoryDto.Name} ;
 
             await _context.AddAsync(category);
             _context.SaveChanges();
@@ -45,12 +45,12 @@ namespace Book_store_1_.Controllers
         // endpoint: to update in specific Id 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategoryById (byte id,[FromBody] Categorydto dto){
-            var category = await _context.Category.FirstOrDefaultAsync(c => c.Category_Id == id);
+            var category = await _context.Category.FirstOrDefaultAsync(c => c.CategoryId == id);
 
             if(category ==null)
                  return NotFound($"No Category was found with Id: {id}"); 
             
-            category.Category_Name = dto.Name;
+            category.CategoryName = dto.Name;
 
             _context.SaveChanges();
 

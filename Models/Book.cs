@@ -7,22 +7,22 @@ namespace Book_store_1_.Models
     public class Book
     {
         public int BookId{set; get;}
-        public string? Book_Name{set; get;}
+        public string? BookName{set; get;}
 
-        public DateTime Release_date{set; get;}
+        public DateTime ReleaseDate{set; get;}
 
-        public byte Category_Id{set; get;}
+        public byte CategoryId{set; get;}
         [Required]
-        [ForeignKey("Category_Id")]
+        [ForeignKey("CategoryId")]
         // add navigation properity 
         public Category? Category {set; get;}
 
         public string? Author{set; get;}
 
-        public int Number_Of_Copies{set; get;}
+        public int NumberOfCopies{set; get;}
 
         // to add relation (one-to-many) between Book and BorrowedBook
-        public ICollection<Borrowed_books>? Borrowed_Books {set; get;}
+        public ICollection<Borrowed_books>? BorrowedBooks {set; get;}
         
         public ICollection<Member>? Members {set; get;}
 

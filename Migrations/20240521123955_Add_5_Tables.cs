@@ -15,27 +15,27 @@ namespace Book_store_1_.Migrations
                 name: "Admin",
                 columns: table => new
                 {
-                    Admin_Id = table.Column<int>(type: "int", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admin", x => x.Admin_Id);
+                    table.PrimaryKey("PK_Admin", x => x.AdminId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
                 {
-                    Category_Id = table.Column<byte>(type: "tinyint", nullable: false)
+                    CategoryId = table.Column<byte>(type: "tinyint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Category_Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                    CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Category_Id);
+                    table.PrimaryKey("PK_Category", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,20 +44,20 @@ namespace Book_store_1_.Migrations
                 {
                     BookId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Book_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Release_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Category_Id = table.Column<byte>(type: "tinyint", nullable: false),
+                    BookName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CategoryId = table.Column<byte>(type: "tinyint", nullable: false),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Number_Of_Copies = table.Column<int>(type: "int", nullable: false)
+                    NumberOfCopies = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Book", x => x.BookId);
                     table.ForeignKey(
-                        name: "FK_Book_Category_Category_Id",
-                        column: x => x.Category_Id,
+                        name: "FK_Book_Category_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Category_Id",
+                        principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -65,16 +65,16 @@ namespace Book_store_1_.Migrations
                 name: "Member",
                 columns: table => new
                 {
-                    Member_Id = table.Column<int>(type: "int", nullable: false)
+                    MemberId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Number_Of_borrowedBooks = table.Column<int>(type: "int", nullable: false),
+                    NumberOfborrowedBooks = table.Column<int>(type: "int", nullable: false),
                     BookId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Member", x => x.Member_Id);
+                    table.PrimaryKey("PK_Member", x => x.MemberId);
                     table.ForeignKey(
                         name: "FK_Member_Book_BookId",
                         column: x => x.BookId,
@@ -86,16 +86,16 @@ namespace Book_store_1_.Migrations
                 name: "Borrowed_Books",
                 columns: table => new
                 {
-                    BorrowedBooksId = table.Column<int>(type: "int", nullable: false)
+                    BorrowedbooksId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookId = table.Column<int>(type: "int", nullable: false),
-                    User_Id = table.Column<int>(type: "int", nullable: false),
-                    Borrow_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Return_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BorrowDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Borrowed_Books", x => x.BorrowedBooksId);
+                    table.PrimaryKey("PK_Borrowed_Books", x => x.BorrowedbooksId);
                     table.ForeignKey(
                         name: "FK_Borrowed_Books_Book_BookId",
                         column: x => x.BookId,
@@ -103,17 +103,17 @@ namespace Book_store_1_.Migrations
                         principalColumn: "BookId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Borrowed_Books_Member_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_Borrowed_Books_Member_UserId",
+                        column: x => x.UserId,
                         principalTable: "Member",
-                        principalColumn: "Member_Id",
+                        principalColumn: "MemberId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Book_Category_Id",
+                name: "IX_Book_CategoryId",
                 table: "Book",
-                column: "Category_Id");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Borrowed_Books_BookId",
@@ -121,9 +121,9 @@ namespace Book_store_1_.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrowed_Books_User_Id",
+                name: "IX_Borrowed_Books_UserId",
                 table: "Borrowed_Books",
-                column: "User_Id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Member_BookId",

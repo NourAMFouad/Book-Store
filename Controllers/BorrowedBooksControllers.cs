@@ -35,40 +35,6 @@ namespace Book_store_1_.Controllers
             }
             return BadRequest($"Only admins able to see Borrowed books and {admin_name} not Admin.");
         }
-        
-//         // function to find number of borrowed books for specific member 
-
-//         public int CheckBorrowedNumber(int Memeber_Id){
-//             var member =  _context.Member.Find(Memeber_Id);
-            
-//             if (member != null){
-//                 int borrowed_books = member.Number_Of_borrowedBooks ;
-
-//                 return borrowed_books;
-//             }else {
-//                 return 0;
-//             }
-//         }
- 
-//  // increasing number of borrowedBooks by using memeber id 
-//        public void IncreasingNumberOfBorrowedBooks(int Member_Id){
-//              var member = _context.Member.Find(Member_Id);
-
-//              if (member != null){
-//                 member.Number_Of_borrowedBooks +=1;
-//              }
-//        }
-
-
-//  // decreasing number of borrowedBooks by using memeber id 
-//        public void DecreasingNumberOfBorrowedBooks(int Member_Id){
-//              var member = _context.Member.Find(Member_Id);
-
-//              if (member != null){
-//                 member.Number_Of_borrowedBooks -=1;
-//              }
-//        }
-
 
         // endpoint: to add new instance in BorrowedBooks model 
 
@@ -94,7 +60,7 @@ namespace Book_store_1_.Controllers
             // check if member not exceeding the required limit of Borrowed books
             // assume that member able to borrow 5 books maximum if exceeding this limit refuse request to borrow the book 
             
-            int borrowed_books = member.Number_Of_borrowedBooks ;
+            int borrowed_books = member.NumberOfborrowedBooks ;
 
             //CheckBorrowedNumber(Member_Id)
             if ( borrowed_books <= 5 ){
@@ -102,20 +68,20 @@ namespace Book_store_1_.Controllers
                 // check if book available or not
                 var book = await _context.Book.FindAsync(book_id);
 
-                if (book != null && book.Number_Of_Copies > 0 ){
+                if (book != null && book.NumberOfCopies > 0 ){
 
                     var Book = new Borrowed_books{
                         BookId = dto.BookId,
-                        User_Id = dto.User_Id,
-                        Borrow_date = dto.Borrow_date,
-                        Return_date = dto.Return_date
+                        UserId = dto.UserId,
+                        BorrowDate = dto.BorrowDate,
+                        ReturnDate = dto.ReturnDate
                         };
 
                     // increasing number of borrowed book for user 
-                    member.Number_Of_borrowedBooks +=1;
+                    member.NumberOfborrowedBooks +=1;
                     // IncreasingNumberOfBorrowedBooks(Member_Id);
                     // decreasing number of copies for this book
-                    book.Number_Of_Copies -=1;
+                    book.NumberOfCopies -=1;
 
                     await _context.AddAsync(Book);
                     _context.SaveChanges();
@@ -145,10 +111,10 @@ namespace Book_store_1_.Controllers
             // increasing number of copies for specific book
             //  
             var book = await _context.Book.FindAsync(borrowedbook.BookId);
-            var member = await _context.Member.FindAsync(borrowedbook.User_Id);
+            var member = await _context.Member.FindAsync(borrowedbook.UserId);
             if (book != null && member != null){
-                book.Number_Of_Copies +=1;
-                member.Number_Of_borrowedBooks -=1;
+                book.NumberOfCopies +=1;
+                member.NumberOfborrowedBooks -=1;
             }
 
                 _context.Remove(borrowedbook);

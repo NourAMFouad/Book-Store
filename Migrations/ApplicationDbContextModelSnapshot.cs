@@ -24,11 +24,11 @@ namespace Book_store_1_.Migrations
 
             modelBuilder.Entity("Book_store_1_.Models.Admin", b =>
                 {
-                    b.Property<int>("Admin_Id")
+                    b.Property<int>("AdminId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Admin_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"));
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -36,9 +36,9 @@ namespace Book_store_1_.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Admin_Id");
+                    b.HasKey("AdminId");
 
-                    b.ToTable("Admin", (string)null);
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Book", b =>
@@ -52,83 +52,83 @@ namespace Book_store_1_.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Book_Name")
+                    b.Property<string>("BookName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Category_Id")
+                    b.Property<byte>("CategoryId")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("Number_Of_Copies")
+                    b.Property<int>("NumberOfCopies")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Release_date")
+                    b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("BookId");
 
-                    b.HasIndex("Category_Id");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("Book", (string)null);
+                    b.ToTable("Book");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Borrowed_books", b =>
                 {
-                    b.Property<int>("BorrowedBooksId")
+                    b.Property<int>("BorrowedbooksId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowedBooksId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowedbooksId"));
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Borrow_date")
+                    b.Property<DateTime>("BorrowDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Return_date")
+                    b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("User_Id")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("BorrowedBooksId");
+                    b.HasKey("BorrowedbooksId");
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Borrowed_Books", (string)null);
+                    b.ToTable("Borrowed_Books");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Category", b =>
                 {
-                    b.Property<byte>("Category_Id")
+                    b.Property<byte>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Category_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("CategoryId"));
 
-                    b.Property<string>("Category_Name")
+                    b.Property<string>("CategoryName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Category_Id");
+                    b.HasKey("CategoryId");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Member", b =>
                 {
-                    b.Property<int>("Member_Id")
+                    b.Property<int>("MemberId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Member_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MemberId"));
 
                     b.Property<int?>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Number_Of_borrowedBooks")
+                    b.Property<int>("NumberOfborrowedBooks")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
@@ -137,18 +137,18 @@ namespace Book_store_1_.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Member_Id");
+                    b.HasKey("MemberId");
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Member", (string)null);
+                    b.ToTable("Member");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Book", b =>
                 {
                     b.HasOne("Book_store_1_.Models.Category", "Category")
                         .WithMany("Books")
-                        .HasForeignKey("Category_Id")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -158,14 +158,14 @@ namespace Book_store_1_.Migrations
             modelBuilder.Entity("Book_store_1_.Models.Borrowed_books", b =>
                 {
                     b.HasOne("Book_store_1_.Models.Book", "Book")
-                        .WithMany("Borrowed_Books")
+                        .WithMany("BorrowedBooks")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Book_store_1_.Models.Member", "Member")
                         .WithMany()
-                        .HasForeignKey("User_Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -183,7 +183,7 @@ namespace Book_store_1_.Migrations
 
             modelBuilder.Entity("Book_store_1_.Models.Book", b =>
                 {
-                    b.Navigation("Borrowed_Books");
+                    b.Navigation("BorrowedBooks");
 
                     b.Navigation("Members");
                 });
