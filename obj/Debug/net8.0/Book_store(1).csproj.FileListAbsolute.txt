@@ -136,3 +136,5 @@ E:\C#_projects\Book_store(1)\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Run
 E:\C#_projects\Book_store(1)\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\C#_projects\Book_store(1)\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\C#_projects\Book_store(1)\obj\Debug\net8.0\Book_store(1).sourcelink.json
+E:\C#_projects\Book_store(1)\bin\Debug\net8.0\AutoMapper.dll
+E:\C#_projects\Book_store(1)\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

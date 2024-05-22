@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using AutoMapper;
 using Book_store_1_.DTOs;
 using Book_store_1_.Models;
 using Book_store_1_.Repository;
@@ -14,20 +15,39 @@ namespace Book_store_1_.Controllers
         // add attribute for db context // to add connection between client side and server side to connect with database 
 //        private readonly ApplicationDbContext _context;
 
-//    1- adding Repository pattern 
-private readonly IBaseRepository<Book> _BooksRepository;
+    //  1- adding Repository pattern 
+    private readonly IBaseRepository<Book, Bookdto> _BooksRepository;
+    private readonly IMapper _mapper;
 
         // adding constructor to initialization 
         // alternative services (repository directory)
 
-// 2- Repository
-public BooksController(IBaseRepository<Book> bookRepository){
-    _BooksRepository = bookRepository;
-}
+    // 2- Repository
+    public BooksController(IBaseRepository<Book, Bookdto> bookRepository , IMapper mapper){
+        _BooksRepository = bookRepository;
+        _mapper = mapper;
+    }
 
         // public BooksController(ApplicationDbContext context){
         //     _context = context;
         // }
+
+        //endpoint: get all books from database
+        [HttpGet("GetAllBooks")]
+        public IActionResult GetAllBooks(){
+           // var books = _BooksRepository.FindAll(new [] {"Category"});
+           var books = _BooksRepository.GetAll();
+            return Ok(books);
+        }
+
+        // endpoint: get all books 
+        // to list all books with the same name
+        [HttpGet("GetAllBooksWiththeSameName")]
+        public IActionResult GetAllBooksWithName(string bookname){
+            // display one insctance only
+            var books = _BooksRepository.Find(b=>b.BookName == bookname, new[] {"Category"});   //, 
+            return Ok(books);
+        }
 
         // endpoint: get specific book using bookid 
         [HttpGet("GetBookByBookId")]
@@ -50,23 +70,25 @@ public BooksController(IBaseRepository<Book> bookRepository){
         [HttpGet("GetBookByCategoryId")]
            public IActionResult GetBookByCategoryId(byte Categoryid)
         {
-            return Ok(_BooksRepository.Find(b=>b.CategoryId == Categoryid));
+            return Ok(_BooksRepository.Find(b => b.CategoryId == Categoryid));
 
         }
 
         //endpoint: get books by releaseDate
-        [HttpGet("GetBookByCategoryReleaseDate")]
+        [HttpGet("GetBookByReleaseDate")]
         public IActionResult GetBookByReleaseDate(DateTime date)
         {
             return Ok(_BooksRepository.Find(b => b.ReleaseDate == date));
         }
 
 
-        [HttpPost]
-        public  IActionResult AddNewBook([FromBody]Book book){
-            _BooksRepository.Add(book);
-            return Ok();
+        [HttpPost("AddNewBook")]
+        public IActionResult AddNewBook([FromBody] Bookdto dto){
+             _BooksRepository.Add(dto);
+             return Ok();
         }
+
+
 
         /*
 

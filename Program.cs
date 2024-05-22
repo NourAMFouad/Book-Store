@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Book_store_1_.Controllers;
 using Book_store_1_.Repository;
+using Book_store_1_.Models;
+using Book_store_1_.DTOs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +23,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // Register repositories
-builder.Services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+// register repositories with specific model and dto  
+builder.Services.AddScoped(typeof(IBaseRepository<Book, Bookdto>),typeof(BaseRepository<Book, Bookdto>));
 
+// register mapping profile 
+// Register AutoMapper with all profiles in the assembly
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();
 
