@@ -1,6 +1,8 @@
 using System.Reflection.Metadata.Ecma335;
+using AutoMapper;
 using Book_store_1_.DTOs;
 using Book_store_1_.Models;
+using Book_store_1_.Repository;
 
 namespace Book_store_1_.Controllers
 {
@@ -11,15 +13,151 @@ namespace Book_store_1_.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public BorrowedBooksController(ApplicationDbContext context)
+        private readonly IBaseRepository<Borrowed_books, BorrowedBookdto> _borrowedBooksRepository;
+        
+        private readonly IBaseRepository<Member,Memberdto> _memberRepository;
+
+        private readonly IBaseRepository<Book, Bookdto> _bookRepository;
+        private readonly IMapper _mapper;
+
+        public BorrowedBooksController(ApplicationDbContext context
+        , IBaseRepository< Borrowed_books, BorrowedBookdto> borrowedBooksRepository
+        , IBaseRepository<Member, Memberdto> memberRepository
+        , IBaseRepository< Book, Bookdto> bookRepository
+        , IMapper mapper)
         {
             _context = context;
+            _borrowedBooksRepository = borrowedBooksRepository;
+            _memberRepository = memberRepository;
+            _bookRepository = bookRepository;
+            _mapper = mapper;
 
         }
 
         // starting to add endpoints
         // endpoint: to get all data from BorrowedBooks model
-        // only Admins able to see all borrowed books 
+        // only Admins able to see all borrowed books   pending 
+        [HttpGet("ListAllBorrowedBooks")]
+        public IActionResult GetAllBorrowedBooks()
+        {
+                
+            var borrowedBooks = _borrowedBooksRepository.GetAll();
+        
+            return Ok(borrowedBooks);
+               
+        }
+
+        // endpoint: to add new instance in BorrowedBooks model 
+
+        /*
+        Borrowed Book:
+            Check if memberId in database or not,
+            True 
+                Check if book_name in database and number of copies not equal 0
+                True
+                        Add book in borrowedBook table and increasing number of borrowed books of user  and decrease number of copies for book
+            Send successful message
+        */
+        [HttpPost("BorrowedBookForMemeber")]
+        public IActionResult AddBorrowedBook([FromBody] BorrowedBookdto dto, [FromQuery] int memberId, [FromQuery] int bookId)
+        {
+            var member = _memberRepository.GetById(memberId);
+
+            if (member == null){
+                return BadRequest($"{memberId}, You are not member.");
+
+            }
+            
+            // check if member not exceeding the required limit of Borrowed books
+            // assume that member able to borrow 5 books maximum if exceeding this limit refuse request to borrow the book 
+            
+            int borrowed_books = _memberRepository.GetSpecificValue(m => m.MemberId == memberId, n=> n.NumberOfborrowedBooks);
+
+            //CheckBorrowedNumber(Member_Id)
+            if ( borrowed_books <= 5 ){
+            
+                // check if book available or not
+                var book = _bookRepository.GetById(bookId);
+                var numberOfBooks = _bookRepository.GetSpecificValue(b=>b.BookId == bookId, b=>b.NumberOfCopies);
+                
+
+                if (book != null && numberOfBooks > 0 ){
+
+
+                    // increasing number of borrowed book for user
+                    // IncreasingNumberOfBorrowedBooks(Member_Id); 
+                    //  borrowed_books += 1;
+                    _memberRepository.UpdateSpecificField(m => m.MemberId == memberId, n=> n.NumberOfborrowedBooks, (member, borrowed_books) => member.NumberOfborrowedBooks += 1 );
+                   
+                    
+                    // decreasing number of copies for this book
+                    // numberOfBooks -=1;
+                    _bookRepository.UpdateSpecificField( b => b.BookId == bookId, n => n.NumberOfCopies, (book, numberOfCopies) => book.NumberOfCopies -= 1);
+
+                    _borrowedBooksRepository.Add(dto);
+                    return Created();
+                    }else {
+                        return BadRequest($"Book {bookId} not available.");
+                    }
+            }else {
+                return BadRequest("You are exceeding the required limit of Borrowed books.");
+            }
+
+        }
+
+
+
+        // endpoint: To allow user to return book
+        // retrun book: then delete borrowedbook from database 
+        // return increasing number of copies for book and decreasing number of userborrowedbooks 
+        [HttpDelete("ReturnBorrowedBook")]
+        public IActionResult RetrunBorrowedBook(int borrowedBookId){
+           // find instance that needed to delete it 
+            var borrowedbook = _borrowedBooksRepository.GetById(borrowedBookId);
+
+            // chech if it exists in database or not 
+            if (borrowedbook == null){
+                return BadRequest($"This Book {borrowedBookId} not found in borrwed books database.");
+            }else{
+
+            // take instances from Book and Memeber entity by using Ids from BorrowedBook data 
+            //  
+            var book = _bookRepository.GetById(borrowedbook.BookId);
+            var member = _memberRepository.GetById(borrowedbook.UserId);
+          
+            if (book != null && member != null){
+                // book.NumberOfCopies +=1;
+                // member.NumberOfborrowedBooks -=1;
+
+                _bookRepository.UpdateSpecificField(b => b.BookId == borrowedbook.BookId ,
+                    b => b.NumberOfCopies,
+                    (book, NumberOfCopies) => book.NumberOfCopies +=1);
+            
+                
+                _memberRepository.UpdateSpecificField( m => m.MemberId == borrowedbook.UserId,
+                    m => m.NumberOfborrowedBooks, 
+                     (memeber, NumberOfborrowedBooks) => member.NumberOfborrowedBooks -=1);
+
+            }
+
+
+
+            _borrowedBooksRepository.Delete(borrowedbook);
+
+            }            
+            return Ok();            
+        }
+
+
+    }
+}
+
+
+
+
+
+/*
+
         [HttpGet("ListAllBorrowedBooks")]
         public async Task<IActionResult> GetAllBorrowedBooks([FromQuery]string admin_name)
         {
@@ -35,96 +173,4 @@ namespace Book_store_1_.Controllers
             }
             return BadRequest($"Only admins able to see Borrowed books and {admin_name} not Admin.");
         }
-
-        // endpoint: to add new instance in BorrowedBooks model 
-
-        /*
-        Borrowed Book:
-            Check if memberId in database or not,
-            True 
-                Check if book_name in database and number of copies not equal 0
-                True
-                        Add book in borrowedBook table and increasing number of borrowed books of user  and decrease number of copies for book
-            Send successful message
-        */
-        [HttpPost("BorrowedBookForMemeber")]
-        public async Task<IActionResult> AddBorrowedBook([FromBody] BorrowedBookdto dto, [FromQuery] int Member_Id, [FromQuery] int book_id)
-        {
-            var member = await _context.Member.FindAsync(Member_Id);
-
-            if (member == null){
-                return BadRequest($"{Member_Id}, You are not member.");
-
-            }
-            
-            // check if member not exceeding the required limit of Borrowed books
-            // assume that member able to borrow 5 books maximum if exceeding this limit refuse request to borrow the book 
-            
-            int borrowed_books = member.NumberOfborrowedBooks ;
-
-            //CheckBorrowedNumber(Member_Id)
-            if ( borrowed_books <= 5 ){
-            
-                // check if book available or not
-                var book = await _context.Book.FindAsync(book_id);
-
-                if (book != null && book.NumberOfCopies > 0 ){
-
-                    var Book = new Borrowed_books{
-                        BookId = dto.BookId,
-                        UserId = dto.UserId,
-                        BorrowDate = dto.BorrowDate,
-                        ReturnDate = dto.ReturnDate
-                        };
-
-                    // increasing number of borrowed book for user 
-                    member.NumberOfborrowedBooks +=1;
-                    // IncreasingNumberOfBorrowedBooks(Member_Id);
-                    // decreasing number of copies for this book
-                    book.NumberOfCopies -=1;
-
-                    await _context.AddAsync(Book);
-                    _context.SaveChanges();
-                    return Created();
-                    }else {
-                        return BadRequest($"Book {book_id} not available.");
-                    }
-            }else {
-                return BadRequest("You are exceeding the required limit of Borrowed books.");
-            }
-
-        }
-
-
-
-        // endpoint: To allow user to return book
-        // retrun book: then delete borrowedbook from database 
-        // return increasing number of copies for book  and decreasing number of userborrowedbooks 
-        [HttpDelete("ReturnBorrowedBook")]
-        public async Task<IActionResult> RetrunBorrowedBook(int borrowedBook_id, BorrowedBookdto dto){
-            var borrowedbook = await _context.Borrowed_Books.FindAsync(borrowedBook_id);
-
-            if (borrowedbook == null){
-                return BadRequest($"This Book {borrowedBook_id} not found in borrwed books database.");
-            }else{
-
-            // increasing number of copies for specific book
-            //  
-            var book = await _context.Book.FindAsync(borrowedbook.BookId);
-            var member = await _context.Member.FindAsync(borrowedbook.UserId);
-            if (book != null && member != null){
-                book.NumberOfCopies +=1;
-                member.NumberOfborrowedBooks -=1;
-            }
-
-                _context.Remove(borrowedbook);
-                _context.SaveChanges();
-
-
-            }            
-            return Ok();            
-        }
-
-
-    }
-}
+*/

@@ -13,11 +13,8 @@ public class ApplicationDbContext : DbContext
 
      // adding property 
      public DbSet<Category> Category {set; get;}
-
      public DbSet<Admin> Admin {set; get;}
-
      public DbSet<Member> Member {set; get;}
-
      public DbSet<Book> Book {set; get;}
      public DbSet<Borrowed_books> Borrowed_Books {set; get;}
 

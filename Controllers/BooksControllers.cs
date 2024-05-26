@@ -17,15 +17,18 @@ namespace Book_store_1_.Controllers
 
     //  1- adding Repository pattern 
     private readonly IBaseRepository<Book, Bookdto> _BooksRepository;
+    // adding CategoryRepository
+    private readonly IBaseRepository<Category, Categorydto> _CategoryRepository; 
     private readonly IMapper _mapper;
 
         // adding constructor to initialization 
         // alternative services (repository directory)
 
     // 2- Repository
-    public BooksController(IBaseRepository<Book, Bookdto> bookRepository , IMapper mapper){
+    public BooksController(IBaseRepository<Book, Bookdto> bookRepository, IBaseRepository<Category, Categorydto> categoryRepository , IMapper mapper){
         _BooksRepository = bookRepository;
         _mapper = mapper;
+        _CategoryRepository = categoryRepository;
     }
 
         // public BooksController(ApplicationDbContext context){
@@ -35,17 +38,17 @@ namespace Book_store_1_.Controllers
         //endpoint: get all books from database
         [HttpGet("GetAllBooks")]
         public IActionResult GetAllBooks(){
-           // var books = _BooksRepository.FindAll(new [] {"Category"});
-           var books = _BooksRepository.GetAll();
+        //    var books = _BooksRepository.FindAll(new [] {"Category"});
+          var books = _BooksRepository.GetAll();
             return Ok(books);
         }
 
         // endpoint: get all books 
         // to list all books with the same name
         [HttpGet("GetAllBooksWiththeSameName")]
-        public IActionResult GetAllBooksWithName(string bookname){
-            // display one insctance only
-            var books = _BooksRepository.Find(b=>b.BookName == bookname, new[] {"Category"});   //, 
+        public IActionResult GetAllBooksWithName(string name){
+            // display instances
+            var books = _BooksRepository.Find(b=>b.BookName == name);   //, 
             return Ok(books);
         }
 
@@ -67,10 +70,15 @@ namespace Book_store_1_.Controllers
 
 
         // endpoint: get books by categoryId
-        [HttpGet("GetBookByCategoryId")]
-           public IActionResult GetBookByCategoryId(byte Categoryid)
+        [HttpGet("GetBooksByCategoryId")]
+           public IActionResult GetBookByCategoryId(byte categoryId)
         {
-            return Ok(_BooksRepository.Find(b => b.CategoryId == Categoryid));
+            var book =  _BooksRepository.Find(b => b.CategoryId == categoryId);
+            // check if book is null or not
+            if (book == null ){
+                return BadRequest($"No book include category Id : {categoryId}");
+            }
+            return Ok(book);
 
         }
 
@@ -81,13 +89,69 @@ namespace Book_store_1_.Controllers
             return Ok(_BooksRepository.Find(b => b.ReleaseDate == date));
         }
 
-
         [HttpPost("AddNewBook")]
         public IActionResult AddNewBook([FromBody] Bookdto dto){
+           
              _BooksRepository.Add(dto);
              return Ok();
         }
+      
 
+        // endpoint: to delete book by using BookId
+        [HttpDelete("deleteBook")]
+        public IActionResult DeleteBook(int Id){
+            var book = _BooksRepository.GetById(Id);
+            // check if book in database or not 
+            if (book != null){
+                     // delete book
+                    _BooksRepository.Delete(book);
+                    return Ok();
+               
+            }else{
+                return BadRequest($"Book With Id {Id} is not in database.");
+            }
+        }
+
+
+        // endpoint: to update book by id
+        // [HttpPut("EditBookById")]
+        // public IActionResult UpdateBook([FromBody] Bookdto dto, int Id){
+        //     // check if book in database or not 
+        //     var book = _BooksRepository.GetById(Id);
+
+        //     if (book != null){
+        //        _BooksRepository.Update(dto);
+        //         return Ok(book);
+        //     }else{
+        //         return BadRequest($"Book with ID {Id} not found.");
+        //     }
+        // }
+
+[HttpPut("EditBookById/{id}")]
+public IActionResult UpdateBook([FromBody] Bookdto dto, int id)
+{
+    // Check if book exists in database
+    var book = _BooksRepository.GetById(id);
+
+    if (book != null)
+    {
+        // Update the DTO's Id to match the URL parameter
+        //  dto.BookId = id;
+        book.BookName = dto.BookName ;
+        book.ReleaseDate = dto.ReleaseDate;
+        book.CategoryId = dto.CategoryId;
+        book.Author = dto.Author;
+        book.NumberOfCopies = dto.NumberOfCopies;
+        
+
+        _BooksRepository.Update(dto);
+        return Ok(book);
+    }
+    else
+    {
+        return BadRequest($"Book with ID {id} not found.");
+    }
+}
 
 
         /*
@@ -255,6 +319,37 @@ namespace Book_store_1_.Controllers
                     }
 
                 }
+            */
+
+
+
+            /*
+            this function it when apply to remove it also remove categoryid with all asociation 
+            // this usefull when you need delete All instances realted with the specific instanc e
+            Ex: when delete  item 3 in Book database and this book include categoryId = 2 , when you excute this function it will delete all items related with this categoryid in category or Book database
+
+
+              // // endpoint: to delete book by using BookId
+        // [HttpDelete("deleteBook")]
+        // public IActionResult DeleteBook(int Id){
+        //     var book = _BooksRepository.GetById(Id);
+
+        //     // check if book in database or not 
+        //     if (book != null){
+
+        //         // var category = _CategoryRepository.GetById(book.CategoryId);
+        //         // if (category != null){
+        //         //     // to retreive the category associated with book
+        //         //      _CategoryRepository.Delete(category);
+        //         //      }
+        //              // delete book
+        //             _BooksRepository.Delete(book);
+        //             return Ok();
+               
+        //     }else{
+        //         return BadRequest($"Book With Id {Id} is not in database.");
+        //     }
+        // }
             */
     }
       

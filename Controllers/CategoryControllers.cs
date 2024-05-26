@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Book_store_1_.DTOs;
+using Book_store_1_.Repository;
+using AutoMapper;
 
 
 
@@ -15,63 +17,63 @@ namespace Book_store_1_.Controllers
     {
         private readonly ApplicationDbContext _context;
         
+        private readonly IBaseRepository<Category, Categorydto> _categoryRepository;
+
+        private readonly IMapper _mapper;
         // alternative services (repository directory)
         // adding constructor 
-        public CategoryController(ApplicationDbContext context){
+        public CategoryController(ApplicationDbContext context, IBaseRepository<Category, Categorydto> categoryRepository, IMapper mapper){
             _context = context;
+            _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         // endpoint: to allow user to display all categories from database
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync(){
-            var Category = await _context.Category.ToListAsync();
+        public IActionResult GetAll(){
+            var Category = _categoryRepository.GetAll();
             return Ok(Category);
         }
 
         // endpoint: to take category name and add new category
         [HttpPost]
-        public async Task<IActionResult> CreateNewCategory(Categorydto categoryDto){
+        public IActionResult CreateNewCategory(Categorydto categoryDto){
             // create new instance from dto 
-            var category = new Category { CategoryName = categoryDto.Name} ;
-
-            await _context.AddAsync(category);
-            _context.SaveChanges();
-
+            var category = _categoryRepository.Add(categoryDto);
             return Ok(category);
-
         } 
+
 
 
         // endpoint: to update in specific Id 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategoryById (byte id,[FromBody] Categorydto dto){
-            var category = await _context.Category.FirstOrDefaultAsync(c => c.CategoryId == id);
-
-            if(category ==null)
+        public IActionResult UpdateCategoryById (byte id,[FromBody] Categorydto dto){
+            var category = _categoryRepository.GetById(id) ;
+            if(category == null)
                  return NotFound($"No Category was found with Id: {id}"); 
             
+            // update dto in record that match with value from url 
             category.CategoryName = dto.Name;
-
-            _context.SaveChanges();
+            _categoryRepository.Update(dto); 
 
             return Ok(category);
         }
 
 
 
-
         // endpoint: to delete specific category by id 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategoryById(byte id , [FromBody] Categorydto dto)
+        public IActionResult DeleteCategoryById(byte id)
         {
-            var category = await _context.Category.FindAsync(id);
+            var category = _categoryRepository.GetById(id);
 
             if (category == null){
                 return NotFound($"No Category found with ID {id}");
             }
-            _context.Remove(category);
-            _context.SaveChanges();
-            return Ok(category);
+            
+            _categoryRepository.Delete(category);
+
+            return Ok();
             
         }
     }

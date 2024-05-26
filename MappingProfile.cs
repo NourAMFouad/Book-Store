@@ -10,6 +10,10 @@ public class MappingProfile : Profile
      public MappingProfile(){
         // initialize and create map
         CreateMap<Book, Bookdto>().ReverseMap();
+        CreateMap<Category, Categorydto>().ReverseMap();
+        CreateMap<Admin, Admindto>().ReverseMap();
+        CreateMap<Member, Memberdto>().ReverseMap();
+        CreateMap<Borrowed_books, BorrowedBookdto>().ReverseMap();
 
      }    
 }

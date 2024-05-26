@@ -15,19 +15,18 @@ public interface IBaseRepository<T, Dto> where T : class where Dto : class
     IEnumerable<T> GetAll();
 
     // return data from database without select id (by expression)
-    T Find(Expression<Func<T,bool>> match, string[] includes = null);
-   
-    IEnumerable<T> FindAll(string[] includes = null);
+    IEnumerable<T> Find(Expression<Func<T,bool>> match, string[] includes = null);
+    
     Dto Add(Dto dto);
 
-    // add group of books in the same time 
-    IEnumerable<Dto> AddRange(IEnumerable<Dto> dto);
-
+  
     void Update(Dto dto);
 
-    void Delete(int Id);
+    void Delete(T t);
 
-    void Delete(byte Id);
+    TResult GetSpecificValue<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector);
+
+    bool UpdateSpecificField<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector, Action<T, TResult> updateAction);
 
 }
 }

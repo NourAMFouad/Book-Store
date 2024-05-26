@@ -1,6 +1,9 @@
 
+using AutoMapper;
 using Book_store_1_.DTOs;
 using Book_store_1_.Models;
+using Book_store_1_.Repository;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Book_store_1_.Controllers
@@ -11,32 +14,31 @@ namespace Book_store_1_.Controllers
     public class MembersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+
+        private readonly IBaseRepository<Member, Memberdto> _memberRepository;
+
+        private readonly IMapper _mapper;
         
         // constructor 
-        public MembersController (ApplicationDbContext context){
+        public MembersController (ApplicationDbContext context, IBaseRepository<Member, Memberdto> memberRepository, IMapper mapper){
             _context = context;
+            _memberRepository = memberRepository;
+            _mapper = mapper;
         }
 
         // Get all Members 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync(){
-            var Members = await _context.Member.ToListAsync();
+        public IActionResult GetAll(){
+            var Members = _memberRepository.GetAll();
             return Ok(Members);
         }
 
 
         // Post all Memebers
         [HttpPost]
-        public async Task<IActionResult> CreateNewMember(Memberdto dto)
+        public IActionResult CreateNewMember(Memberdto dto)
         {
-            var Member = new Member {
-                Username = dto.Username,
-                Password = dto.Password,
-                NumberOfborrowedBooks = dto.NumberOfborrowedBooks
-            };
-
-            await _context.AddAsync(Member);
-            _context.SaveChanges();
+            var Member = _memberRepository.Add(dto);
 
             return Ok(Member);
             
