@@ -49,8 +49,8 @@ namespace Book_store_1_.Controllers
         // endpoint: to add new instance in BorrowedBooks model 
 
       
-        [HttpPost("BorrowedBookForMemeber")]
-        public IActionResult AddBorrowedBook([FromBody] BorrowedBookdto dto, [FromQuery] int memberId, [FromQuery] int bookId)
+        [HttpPost("AddingBy{memberId}and{bookId}")]
+        public IActionResult AddBorrowedBook([FromBody] BorrowedBookdto dto, int memberId, int bookId)
         {
             var member = _memberRepository.GetById(memberId);
 
@@ -91,7 +91,7 @@ namespace Book_store_1_.Controllers
         // endpoint: To allow user to return book
         // retrun book: then delete borrowedbook from database 
         // return increasing number of copies for book and decreasing number of userborrowedbooks 
-        [HttpDelete("ReturnBorrowedBook")]
+        [HttpDelete("Return{borrowedBookId}")]
         public IActionResult RetrunBorrowedBook(int borrowedBookId){
            // find instance that needed to delete it 
             var borrowedbook = _borrowedBooksRepository.GetById(borrowedBookId);

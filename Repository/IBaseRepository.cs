@@ -9,9 +9,9 @@ public interface IBaseRepository<T, Dto> where T : class where Dto : class
     T? GetById(int id);
     T? GetById(byte id);
 
-    IEnumerable<T> GetAll();
+    List<T> GetAll();
     
-    IEnumerable<T> Find(Expression<Func<T,bool>> match);
+    List<T> Find(Expression<Func<T,bool>> match);
     
     Dto Add(Dto dto);
 

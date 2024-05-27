@@ -35,13 +35,13 @@ namespace Book_store_1_.Repository
         }
 
     
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
              return  _context.Set<T>().ToList();   
         }
 
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> match){
+        public List<T> Find(Expression<Func<T, bool>> match){
 
             IQueryable<T> query = _context.Set<T>();
         
