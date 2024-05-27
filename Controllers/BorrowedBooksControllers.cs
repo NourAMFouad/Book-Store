@@ -49,7 +49,7 @@ namespace Book_store_1_.Controllers
         // endpoint: to add new instance in BorrowedBooks model 
 
       
-        [HttpPost("AddingBy{memberId}and{bookId}")]
+        [HttpPost("Addingby/{memberId}/Book/{bookId}")]
         public IActionResult AddBorrowedBook([FromBody] BorrowedBookdto dto, int memberId, int bookId)
         {
             var member = _memberRepository.GetById(memberId);
