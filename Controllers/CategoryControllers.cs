@@ -1,7 +1,4 @@
 using Book_store_1_.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Book_store_1_.DTOs;
 using Book_store_1_.Repository;
 using AutoMapper;
@@ -20,8 +17,8 @@ namespace Book_store_1_.Controllers
         private readonly IBaseRepository<Category, Categorydto> _categoryRepository;
 
         private readonly IMapper _mapper;
-        // alternative services (repository directory)
-        // adding constructor 
+    
+
         public CategoryController(ApplicationDbContext context, IBaseRepository<Category, Categorydto> categoryRepository, IMapper mapper){
             _context = context;
             _categoryRepository = categoryRepository;

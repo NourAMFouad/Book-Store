@@ -3,8 +3,6 @@ using AutoMapper;
 using Book_store_1_.DTOs;
 using Book_store_1_.Models;
 using Book_store_1_.Repository;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Book_store_1_.Controllers
 {

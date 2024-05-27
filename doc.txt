@@ -1,0 +1,25 @@
+
+
+/*
+foriegn key example
+
+    public int CategoryId { get; set; }
+    [ForeignKey("CategoryId")]
+    public Category Category { get; set; }
+*/
+
+// Dependency injection of the IBaseRepository interface for Admin entity and Admindto data transfer object
+// This allows for decoupling of the repository implementation from the business logic, 
+// making it easier to manage, test, and maintain the code.
+
+
+
+
+// why using IEnumerable VS  Iquerable?
+
+
+// using DbContext
+// why we need Dbcontext
+// take instance of Dbcontext to manage database operation
+
+content negutiation:

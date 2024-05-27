@@ -6,8 +6,7 @@ namespace Book_store_1_.Models
     {
         [Key]
         public int BorrowedbooksId {set; get;}
-
-        
+         
         public int BookId{set; get;}
         [Required]
         [ForeignKey("BookId")]

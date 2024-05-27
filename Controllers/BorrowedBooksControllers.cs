@@ -34,8 +34,7 @@ namespace Book_store_1_.Controllers
 
         }
 
-        // starting to add endpoints
-        // endpoint: to get all data from BorrowedBooks model
+        
         // only Admins able to see all borrowed books   pending 
         [HttpGet("ListAllBorrowedBooks")]
         public IActionResult GetAllBorrowedBooks()
@@ -49,15 +48,7 @@ namespace Book_store_1_.Controllers
 
         // endpoint: to add new instance in BorrowedBooks model 
 
-        /*
-        Borrowed Book:
-            Check if memberId in database or not,
-            True 
-                Check if book_name in database and number of copies not equal 0
-                True
-                        Add book in borrowedBook table and increasing number of borrowed books of user  and decrease number of copies for book
-            Send successful message
-        */
+      
         [HttpPost("BorrowedBookForMemeber")]
         public IActionResult AddBorrowedBook([FromBody] BorrowedBookdto dto, [FromQuery] int memberId, [FromQuery] int bookId)
         {
@@ -68,30 +59,20 @@ namespace Book_store_1_.Controllers
 
             }
             
-            // check if member not exceeding the required limit of Borrowed books
-            // assume that member able to borrow 5 books maximum if exceeding this limit refuse request to borrow the book 
-            
+  
             int borrowed_books = _memberRepository.GetSpecificValue(m => m.MemberId == memberId, n=> n.NumberOfborrowedBooks);
 
-            //CheckBorrowedNumber(Member_Id)
             if ( borrowed_books <= 5 ){
             
-                // check if book available or not
+              
                 var book = _bookRepository.GetById(bookId);
                 var numberOfBooks = _bookRepository.GetSpecificValue(b=>b.BookId == bookId, b=>b.NumberOfCopies);
                 
 
                 if (book != null && numberOfBooks > 0 ){
 
-
-                    // increasing number of borrowed book for user
-                    // IncreasingNumberOfBorrowedBooks(Member_Id); 
-                    //  borrowed_books += 1;
                     _memberRepository.UpdateSpecificField(m => m.MemberId == memberId, n=> n.NumberOfborrowedBooks, (member, borrowed_books) => member.NumberOfborrowedBooks += 1 );
                    
-                    
-                    // decreasing number of copies for this book
-                    // numberOfBooks -=1;
                     _bookRepository.UpdateSpecificField( b => b.BookId == bookId, n => n.NumberOfCopies, (book, numberOfCopies) => book.NumberOfCopies -= 1);
 
                     _borrowedBooksRepository.Add(dto);
@@ -126,8 +107,7 @@ namespace Book_store_1_.Controllers
             var member = _memberRepository.GetById(borrowedbook.UserId);
           
             if (book != null && member != null){
-                // book.NumberOfCopies +=1;
-                // member.NumberOfborrowedBooks -=1;
+
 
                 _bookRepository.UpdateSpecificField(b => b.BookId == borrowedbook.BookId ,
                     b => b.NumberOfCopies,
@@ -151,26 +131,3 @@ namespace Book_store_1_.Controllers
 
     }
 }
-
-
-
-
-
-/*
-
-        [HttpGet("ListAllBorrowedBooks")]
-        public async Task<IActionResult> GetAllBorrowedBooks([FromQuery]string admin_name)
-        {
-            
-            var admins = await _context.Admin.FirstOrDefaultAsync(m => m.Username == admin_name);                  //.FindAsync(admin_name);    this for integer only 
-            // check it it object null or not
-            if (admins != null){
-                if (admins.Username == admin_name){
-                    var borrowedBooks = await _context.Borrowed_Books.ToListAsync();
-                    
-                    return Ok(borrowedBooks);
-                }
-            }
-            return BadRequest($"Only admins able to see Borrowed books and {admin_name} not Admin.");
-        }
-*/
