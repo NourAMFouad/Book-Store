@@ -22,7 +22,7 @@ namespace Book_store_1_.Models
         public int NumberOfCopies{set; get;}
 
 
-        public ICollection<Borrowed_books>? BorrowedBooks {set; get;}
+        public ICollection<BorrowedBooks>? BorrowedBooks {set; get;}
         
         public ICollection<Member>? Members {set; get;}
 

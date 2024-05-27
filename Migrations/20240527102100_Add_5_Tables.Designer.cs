@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Book_store_1_.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240526094844_Add_5_Tables")]
+    [Migration("20240527102100_Add_5_Tables")]
     partial class Add_5_Tables
     {
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace Book_store_1_.Migrations
                     b.ToTable("Book");
                 });
 
-            modelBuilder.Entity("Book_store_1_.Models.Borrowed_books", b =>
+            modelBuilder.Entity("Book_store_1_.Models.BorrowedBooks", b =>
                 {
                     b.Property<int>("BorrowedbooksId")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace Book_store_1_.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Borrowed_Books");
+                    b.ToTable("BorrowedBooks");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Category", b =>
@@ -158,7 +158,7 @@ namespace Book_store_1_.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Book_store_1_.Models.Borrowed_books", b =>
+            modelBuilder.Entity("Book_store_1_.Models.BorrowedBooks", b =>
                 {
                     b.HasOne("Book_store_1_.Models.Book", "Book")
                         .WithMany("BorrowedBooks")

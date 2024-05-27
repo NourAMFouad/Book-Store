@@ -39,35 +39,38 @@ namespace Book_store_1_.Controllers
 
         // endpoint: get all books 
         // to list all books with the same name
-        [HttpGet("GetAllBooksWiththeSameName")]
+        
+        [HttpGet("books", Name = "GetAllBooksWithName")]
         public IActionResult GetAllBooksWithName(string name){
             // display instances
-            var books = _BooksRepository.Find(b=>b.BookName == name);   //, 
+            var books = _BooksRepository.Find(b=>b.BookName == name);  
             return Ok(books);
         }
 
         // endpoint: get specific book using bookid 
-        [HttpGet("GetBookByBookId")]
-        public IActionResult GetBookById(int Id)
+        // [HttpGet("BookId{id}")]
+        [HttpGet("books/{id}", Name = "GetBookById")]
+        public IActionResult GetBookById(int id)
         {
-            var data = _BooksRepository.GetById(Id);
+            var data = _BooksRepository.GetById(id);
             if (data != null)
             {
                 return Ok(data);
             }
             else
             {
-                return BadRequest($"Id {Id} not found in database");
+                return BadRequest($"Id {id} not found in database");
             }
         }
 
 
 
         // endpoint: get books by categoryId
-        [HttpGet("GetBooksByCategoryId")]
-           public IActionResult GetBookByCategoryId(byte categoryId)
+        [HttpGet("categoryID:{categoryId}")]
+        public IActionResult GetBookByCategoryId(byte categoryId)
         {
             var book =  _BooksRepository.Find(b => b.CategoryId == categoryId);
+
             // check if book is null or not
             if (book == null ){
                 return BadRequest($"No book include category Id : {categoryId}");
@@ -77,7 +80,7 @@ namespace Book_store_1_.Controllers
         }
 
         //endpoint: get books by releaseDate
-        [HttpGet("GetBookByReleaseDate")]
+        [HttpGet("Date{date}")]
         public IActionResult GetBookByReleaseDate(DateTime date)
         {
             return Ok(_BooksRepository.Find(b => b.ReleaseDate == date));
@@ -92,9 +95,9 @@ namespace Book_store_1_.Controllers
       
 
         // endpoint: to delete book by using BookId
-        [HttpDelete("deleteBook")]
-        public IActionResult DeleteBook(int Id){
-            var book = _BooksRepository.GetById(Id);
+        [HttpDelete("deleteBook{id}")]
+        public IActionResult DeleteBook(int id){
+            var book = _BooksRepository.GetById(id);
             // check if book in database or not 
             if (book != null){
                      // delete book
@@ -102,12 +105,12 @@ namespace Book_store_1_.Controllers
                     return Ok();
                
             }else{
-                return BadRequest($"Book With Id {Id} is not in database.");
+                return BadRequest($"Book With Id {id} is not in database.");
             }
         }
 
 
-[HttpPut("EditBookById/{id}")]
+[HttpPut("BookById/{id}")]
 public IActionResult UpdateBook([FromBody] Bookdto dto, int id)
 {
     // Check if book exists in database

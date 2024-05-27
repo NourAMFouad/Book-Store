@@ -13,7 +13,7 @@ namespace Book_store_1_.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly IBaseRepository<Borrowed_books, BorrowedBookdto> _borrowedBooksRepository;
+        private readonly IBaseRepository<BorrowedBooks, BorrowedBookdto> _borrowedBooksRepository;
         
         private readonly IBaseRepository<Member,Memberdto> _memberRepository;
 
@@ -21,7 +21,7 @@ namespace Book_store_1_.Controllers
         private readonly IMapper _mapper;
 
         public BorrowedBooksController(ApplicationDbContext context
-        , IBaseRepository< Borrowed_books, BorrowedBookdto> borrowedBooksRepository
+        , IBaseRepository< BorrowedBooks, BorrowedBookdto> borrowedBooksRepository
         , IBaseRepository<Member, Memberdto> memberRepository
         , IBaseRepository< Book, Bookdto> bookRepository
         , IMapper mapper)
@@ -36,7 +36,7 @@ namespace Book_store_1_.Controllers
 
         
         // only Admins able to see all borrowed books   pending 
-        [HttpGet("ListAllBorrowedBooks")]
+        [HttpGet("AllBooks")]
         public IActionResult GetAllBorrowedBooks()
         {
                 

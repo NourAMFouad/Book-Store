@@ -83,7 +83,7 @@ namespace Book_store_1_.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Borrowed_Books",
+                name: "BorrowedBooks",
                 columns: table => new
                 {
                     BorrowedbooksId = table.Column<int>(type: "int", nullable: false)
@@ -95,15 +95,15 @@ namespace Book_store_1_.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Borrowed_Books", x => x.BorrowedbooksId);
+                    table.PrimaryKey("PK_BorrowedBooks", x => x.BorrowedbooksId);
                     table.ForeignKey(
-                        name: "FK_Borrowed_Books_Book_BookId",
+                        name: "FK_BorrowedBooks_Book_BookId",
                         column: x => x.BookId,
                         principalTable: "Book",
                         principalColumn: "BookId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Borrowed_Books_Member_UserId",
+                        name: "FK_BorrowedBooks_Member_UserId",
                         column: x => x.UserId,
                         principalTable: "Member",
                         principalColumn: "MemberId",
@@ -116,13 +116,13 @@ namespace Book_store_1_.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrowed_Books_BookId",
-                table: "Borrowed_Books",
+                name: "IX_BorrowedBooks_BookId",
+                table: "BorrowedBooks",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrowed_Books_UserId",
-                table: "Borrowed_Books",
+                name: "IX_BorrowedBooks_UserId",
+                table: "BorrowedBooks",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -138,7 +138,7 @@ namespace Book_store_1_.Migrations
                 name: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Borrowed_Books");
+                name: "BorrowedBooks");
 
             migrationBuilder.DropTable(
                 name: "Member");

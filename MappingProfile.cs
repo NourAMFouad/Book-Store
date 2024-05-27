@@ -13,7 +13,7 @@ public class MappingProfile : Profile
         CreateMap<Category, Categorydto>().ReverseMap();
         CreateMap<Admin, Admindto>().ReverseMap();
         CreateMap<Member, Memberdto>().ReverseMap();
-        CreateMap<Borrowed_books, BorrowedBookdto>().ReverseMap();
+        CreateMap<BorrowedBooks, BorrowedBookdto>().ReverseMap();
 
      }    
 }

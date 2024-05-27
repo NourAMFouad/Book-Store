@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Book_store_1_.Models
 {
-    public class Borrowed_books
+    public class BorrowedBooks
     {
         [Key]
         public int BorrowedbooksId {set; get;}

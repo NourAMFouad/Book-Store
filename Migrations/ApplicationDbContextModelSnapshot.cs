@@ -71,7 +71,7 @@ namespace Book_store_1_.Migrations
                     b.ToTable("Book");
                 });
 
-            modelBuilder.Entity("Book_store_1_.Models.Borrowed_books", b =>
+            modelBuilder.Entity("Book_store_1_.Models.BorrowedBooks", b =>
                 {
                     b.Property<int>("BorrowedbooksId")
                         .ValueGeneratedOnAdd()
@@ -97,7 +97,7 @@ namespace Book_store_1_.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Borrowed_Books");
+                    b.ToTable("BorrowedBooks");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Category", b =>
@@ -155,7 +155,7 @@ namespace Book_store_1_.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Book_store_1_.Models.Borrowed_books", b =>
+            modelBuilder.Entity("Book_store_1_.Models.BorrowedBooks", b =>
                 {
                     b.HasOne("Book_store_1_.Models.Book", "Book")
                         .WithMany("BorrowedBooks")

@@ -75,7 +75,7 @@ namespace Book_store_1_.Repository
         {
             var entity = _mapper.Map<T>(dto);
 
-            _context.Set<T>().Attach(entity);
+            _context.Set<T>().Update(entity);
           
             _context.SaveChanges();
         }

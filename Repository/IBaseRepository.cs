@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Book_store_1_.Models;
 
 namespace Book_store_1_.Repository{
  
@@ -21,6 +22,6 @@ public interface IBaseRepository<T, Dto> where T : class where Dto : class
     TResult GetSpecificValue<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector);
 
     bool UpdateSpecificField<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector, Action<T, TResult> updateAction);
-
-}
+   
+    }
 }

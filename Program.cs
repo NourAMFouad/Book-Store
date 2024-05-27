@@ -34,7 +34,7 @@ builder.Services.AddScoped(typeof(IBaseRepository<Admin, Admindto>) , typeof(Bas
 
 builder.Services.AddScoped(typeof(IBaseRepository<Member, Memberdto>) , typeof(BaseRepository<Member, Memberdto>));
 
-builder.Services.AddScoped(typeof(IBaseRepository<Borrowed_books,BorrowedBookdto>) , typeof(BaseRepository<Borrowed_books,BorrowedBookdto>));
+builder.Services.AddScoped(typeof(IBaseRepository<BorrowedBooks,BorrowedBookdto>) , typeof(BaseRepository<BorrowedBooks,BorrowedBookdto>));
 
 
 // register mapping profile 

@@ -1,3 +1,75 @@
+// questions 
+why put request edit id and add new data in database , i need just to edit not to add new data in database 
+controllers
+[HttpPut("BookById/{id}")]
+public IActionResult UpdateBook([FromBody] Bookdto dto, int id)
+{
+    // Check if book exists in database
+    var book = _BooksRepository.GetById(id);
+
+    if (book != null)
+    {
+   
+        book.BookName = dto.BookName ;
+        book.ReleaseDate = dto.ReleaseDate;
+        book.CategoryId = dto.CategoryId;
+        book.Author = dto.Author;
+        book.NumberOfCopies = dto.NumberOfCopies;
+        
+
+        _BooksRepository.Update(book);
+        return Ok(book);
+    }
+    else
+    {
+        return BadRequest($"Book with ID {id} not found.");
+    }
+}
+    }
+      
+} 
+
+// base repository
+
+         public bool UpdateSpecificField<TResult>(Expression<Func<T, bool>> filter, Expression<Func<T, TResult>> selector, Action<T,TResult> updateAction)
+        {
+            // find entity 
+            var entity = _context.Set<T>().Where(filter).FirstOrDefault();
+            
+            if (entity == null)
+            {
+                return false;
+            }
+
+            var property = selector.Compile()(entity);
+            if (property == null)
+            {
+                return false;
+            }
+
+           
+            updateAction(entity, property);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
