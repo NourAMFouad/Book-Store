@@ -1,11 +1,18 @@
-using Microsoft.EntityFrameworkCore;
 using Book_store_1_.Controllers;
 using Book_store_1_.Repository;
 using Book_store_1_.Models;
 using Book_store_1_.DTOs;
+using Book_store_1_.Helpers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration;
+
 
 // Add configuration
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -15,8 +22,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 // Registration of services for database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 // adding refrences 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -37,6 +47,40 @@ builder.Services.AddScoped(typeof(IBaseRepository<Member, Memberdto>) , typeof(B
 builder.Services.AddScoped(typeof(IBaseRepository<BorrowedBooks,BorrowedBookdto>) , typeof(BaseRepository<BorrowedBooks,BorrowedBookdto>));
 
 
+/////Identity & Authentication
+
+// Configure JWT settings
+builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+
+
+// Add Authentication service  
+// to map between them 
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// adding and configure identity 
+builder.Services.AddIdentity<Admin, IdentityRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+
+// to make it add authorization schema by defualt before using them endpoints
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configuration["Issuer"],
+            ValidAudience = configuration["SecureApiUser"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["RUFcyW3+ElA5eILQBm+SEqMf3POYSO7adENlT8SsvWM="]))
+        };
+    });
+
 // register mapping profile 
 // Register AutoMapper with all profiles in the assembly
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
@@ -52,6 +96,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+
+app.UseAuthentication();
+
 app.UseAuthorization();
 app.MapControllers();
 
@@ -64,3 +112,6 @@ Additional notes
 // services: The IServiceCollection provided by builder.Services, used to register application services
 //           for dependency injection.
 */
+
+ 
+   

@@ -31,6 +31,7 @@ namespace Book_store_1_.Controllers
         public  IActionResult GetAllAdmins()
         {
             var Admin = _adminRepository.GetAll();
+            
             return Ok(Admin);
         }
 

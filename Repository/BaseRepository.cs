@@ -23,21 +23,31 @@ namespace Book_store_1_.Repository
         }
  
         public T? GetById(int id)
-        {
+        {  
+            
+
             var data = _context.Set<T>().Find(id);
                return data;
         }
 
         public T? GetById(byte id)
         {
+             
             var data = _context.Set<T>().Find(id);
                return data;
         }
 
     
-        public List<T> GetAll()
+        // public List<T> GetAll()
+        // {
+        //      return  _context.Set<T>().ToList();   
+        // }
+
+        public List<Dto> GetAll()
         {
-             return  _context.Set<T>().ToList();   
+            var entities = _context.Set<T>().ToList();
+            var dtos = _mapper.Map<List<Dto>>(entities);
+            return dtos;
         }
 
 

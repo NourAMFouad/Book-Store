@@ -1,12 +1,15 @@
+using Microsoft.AspNetCore.Identity;
+
+
 namespace Book_store_1_.Models
 {
-    public class Admin
-    {
-        public int AdminId{set; get;}
+    public class Admin : IdentityUser
+    {   
+        [Required]
+        public string? FirstName{set; get;}
 
-        public string? Username{set; get;}
-
-        public string? Password{set; get;}
+        [Required]
+        public string? LastName{set; get;}
         
     }
 }

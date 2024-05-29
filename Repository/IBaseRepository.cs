@@ -9,7 +9,7 @@ public interface IBaseRepository<T, Dto> where T : class where Dto : class
     T? GetById(int id);
     T? GetById(byte id);
 
-    List<T> GetAll();
+   List<Dto> GetAll();
     
     List<T> Find(Expression<Func<T,bool>> match);
     

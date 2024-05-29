@@ -2,9 +2,13 @@ namespace Book_store_1_.DTOs
 {
     public class Admindto
     {
-        public string? Username{set; get;}
+        public string? username{set; get;}
 
-        public string? Password{set; get;}
+        public string? password{set; get;}
+
+        public string? firstName {set; get;}
+
+        public string? lastName {set; get;}
 
     }
 }
