@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {}
+    "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {}
   },
   "projects": {
-    "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {
+    "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
+        "projectUniqueName": "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
         "projectName": "Book_store(1)",
-        "projectPath": "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
+        "projectPath": "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "E:\\C#_projects\\Book_store(1)\\obj\\",
+        "outputPath": "e:\\C#_projects\\Book_store(1)\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config"

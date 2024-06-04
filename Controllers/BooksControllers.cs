@@ -89,14 +89,14 @@ namespace Book_store_1_.Controllers
         }
 
         [HttpPost("AddNewBook")]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public IActionResult AddNewBook([FromBody] Bookdto dto){
             
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var userId = identity.FindFirst("uid");
-            if (userId == null){
-                return BadRequest("Unothorized");
-            }
+            // var identity = HttpContext.User.Identity as ClaimsIdentity;
+            // var userId = identity.FindFirst("uid");
+            // if (userId == null){
+                // return BadRequest("Unothorized");
+            // }
             
              _BooksRepository.Add(dto);
              return Ok();
@@ -123,25 +123,13 @@ namespace Book_store_1_.Controllers
 public IActionResult UpdateBook([FromBody] Bookdto dto, int id)
 {
     // Check if book exists in database
-    var book = _BooksRepository.GetById(id);
+    // var book = _BooksRepository.GetById(id);
 
-    if (book != null)
-    {
-   
-        book.BookName = dto.BookName ;
-        book.ReleaseDate = dto.ReleaseDate;
-        book.CategoryId = dto.CategoryId;
-        book.Author = dto.Author;
-        book.NumberOfCopies = dto.NumberOfCopies;
-        
-
+        dto.BookId = id;
         _BooksRepository.Update(dto);
-        return Ok(book);
-    }
-    else
-    {
-        return BadRequest($"Book with ID {id} not found.");
-    }
+        return Ok();
+   
+   
 }
     }
       

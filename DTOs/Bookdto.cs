@@ -2,7 +2,8 @@ namespace Book_store_1_.DTOs
 {
     public class Bookdto()
     {
-  
+
+       public int BookId {set; get;}
        public string? BookName{set; get;}
 
         public DateTime ReleaseDate{set; get;}

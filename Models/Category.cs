@@ -12,16 +12,8 @@ namespace Book_store_1_.Models
         // adding constrain 
          [MaxLength(100)]
          public string? CategoryName{set; get;}
-         
+
          public ICollection<Book>? Books { get; set; }
          
     }
 }
-  
-
-
-/*
-Additional notes
---> why adding namespace?
-
-*/

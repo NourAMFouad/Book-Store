@@ -32,6 +32,7 @@ namespace Book_store_1_.Controllers
             return Ok(Category);
         }
 
+
         // endpoint: to take category name and add new category
         [HttpPost]
         public IActionResult CreateNewCategory(Categorydto categoryDto){
@@ -45,18 +46,16 @@ namespace Book_store_1_.Controllers
         // endpoint: to update in specific Id 
         [HttpPut("{id}")]
         public IActionResult UpdateCategoryById (byte id,[FromBody] Categorydto dto){
-            var category = _categoryRepository.GetById(id) ;
-            if(category == null)
-                 return NotFound($"No Category was found with Id: {id}"); 
+            // var category = _categoryRepository.GetById(id) ;
+            // if(category == null)
+            //      return NotFound($"No Category was found with Id: {id}"); 
             
             // update dto in record that match with value from url 
-            category.CategoryName = dto.Name;
+            dto.CategoryId = id;
             _categoryRepository.Update(dto); 
 
-            return Ok(category);
+            return Ok();
         }
-
-
 
         // endpoint: to delete specific category by id 
         [HttpDelete("{id}")]

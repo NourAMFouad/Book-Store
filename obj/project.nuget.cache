@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Xeoh6iAenx1cGnyuk+yrzkstHU1SPNc1yMgVAEx5t4o9qeiU6GQjjVo5JcI1TjC5g+BNReNoa+msu9MsgnntXg==",
+  "dgSpecHash": "qyuEYEqk5XnsUCvhIDxzzcUWuZgFpt07tKoAlujJFzJg0hnmj+c8YWXwhjnAg6ErVr7ql5XDUx2g3XdtI24cCw==",
   "success": true,
-  "projectFilePath": "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
+  "projectFilePath": "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
