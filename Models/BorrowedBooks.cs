@@ -12,8 +12,9 @@ namespace Book_store_1_.Models
         [ForeignKey("BookId")]
         public Book? Book {set; get;}
 
-        public int UserId {set; get;}
         [ForeignKey("UserId")]
+        public int UserId {set; get;}
+        
         public Member? Member{set; get;} 
 
         public DateTime BorrowDate {set; get;}

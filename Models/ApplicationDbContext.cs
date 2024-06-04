@@ -8,7 +8,7 @@ using Microsoft.Identity.Client;
 
 namespace Book_store_1_.Controllers;
 
-public class ApplicationDbContext : IdentityDbContext<Admin, ApplicationRole, string>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 //public class ApplicationDbContext : DbContext
 {
      // constructor 

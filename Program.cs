@@ -58,15 +58,18 @@ builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 // adding and configure identity 
-builder.Services.AddIdentity<Admin, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 
 // to make it add authorization schema by defualt before using them endpoints
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
+string secretKey = "QD2e4b2/K6FcnxB0AYOAFyh3JAzSVEc9ZXY/YR+L//s="; 
+if (string.IsNullOrEmpty(secretKey))
+{
+    throw new ArgumentNullException(nameof(secretKey), "JWT secret key cannot be null or empty.");
+}
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -75,11 +78,15 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = configuration["Issuer"],
-            ValidAudience = configuration["SecureApiUser"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["RUFcyW3+ElA5eILQBm+SEqMf3POYSO7adENlT8SsvWM="]))
+            ValidIssuer = "Issuer", 
+            ValidAudience = "SecureApiUser", 
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)) 
         };
     });
+  
+                
+                
+       
 
 // register mapping profile 
 // Register AutoMapper with all profiles in the assembly

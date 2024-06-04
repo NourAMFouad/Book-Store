@@ -1,8 +1,10 @@
 using System.ComponentModel;
+using System.Security.Claims;
 using AutoMapper;
 using Book_store_1_.DTOs;
 using Book_store_1_.Models;
 using Book_store_1_.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Book_store_1_.Controllers
@@ -87,8 +89,15 @@ namespace Book_store_1_.Controllers
         }
 
         [HttpPost("AddNewBook")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddNewBook([FromBody] Bookdto dto){
-           
+            
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = identity.FindFirst("uid");
+            if (userId == null){
+                return BadRequest("Unothorized");
+            }
+            
              _BooksRepository.Add(dto);
              return Ok();
         }
