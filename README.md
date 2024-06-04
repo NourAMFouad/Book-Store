@@ -1,4 +1,9 @@
 Endpoints:
+# Auth
+Include:
+- POST/ register/  
+- POST/ login/   
+
 # Admin
 Include 2 endpoints 
 - GET/ api/Admin  :  To list and display all Adimns from database.
