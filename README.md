@@ -3,7 +3,9 @@ Endpoints:
 Include:
 - POST/ Admin Registeration/
 - POST/ Member Registeration/  
-- POST/ login/   
+- POST/ login/
+- Get/ Admins    : to display all registered admins
+- Get/ Members    : to display all registered Members 
 
 # Admin
 Include 2 endpoints 
