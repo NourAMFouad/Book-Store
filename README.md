@@ -12,13 +12,14 @@ Include 2 endpoints
 
 
 # Books
-Include 7 endpoints
+Include 8 endpoints
 - GET/ api/Books   :   To display all books from database.
-- POST/ api/Books  :   Only Admins able to Add new book.
 - GET/  api/Books/GetBookByBookId  :  display book details by adding Book ID
 - GET/  api/Books/GetBookByName    :  display book details by adding Book Name
 - GET/  api/Books/GetByCategoryId  :  dispaly All books with details by Category Id
-- GET/  api/Books/GetBooksByRelease_Date  :  dispaly All books with details by Adding Release_date
+- GET/  api/Books/GetBooksByRelease_Date  :  dispaly All books with details by Adding Release_date.
+- POST/ api/Books  :   Only Admins able to Add new book.
+- PUT/  api/Books/BookById/{id}   : to Edit book by id  
 - DELETE/ api/Books/DeleteBookById :  Only Admins able to delete books.
 
 
