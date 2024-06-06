@@ -1,7 +1,8 @@
 Endpoints:
 # Auth
 Include:
-- POST/ register/  
+- POST/ Admin Registeration/
+- POST/ Member Registeration/  
 - POST/ login/   
 
 # Admin
