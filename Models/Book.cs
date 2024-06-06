@@ -6,6 +6,7 @@ namespace Book_store_1_.Models
 {
     public class Book
     {
+        
         public int BookId{set; get;}
         public string? BookName{set; get;}
 

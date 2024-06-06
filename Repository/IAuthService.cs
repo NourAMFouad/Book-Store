@@ -6,7 +6,9 @@ namespace Book_store_1_.Repository
 {
     public interface IAuthService
     {
-        Task<RegistrationResult> RegisterAsync(ApplicationUserdto model);
+        Task<RegistrationResult> RegisterAdminAsync(ApplicationUserdto model);
+
+        Task<RegistrationResult> RegisterMemberAsync(ApplicationUserdto model);
 
         Task<AuthModel> LoginAsync(Logindto model);
 

@@ -35,8 +35,10 @@ namespace Book_store_1_.Controllers
 
         // endpoint: to take category name and add new category
         [HttpPost]
-        public IActionResult CreateNewCategory(Categorydto categoryDto){
+        public IActionResult CreateNewCategory(Categorydto categoryDto,string categName){
             // create new instance from dto 
+
+            categoryDto.CategoryName = categName;
             var category = _categoryRepository.Add(categoryDto);
             return Ok(category);
         } 

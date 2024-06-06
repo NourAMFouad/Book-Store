@@ -22,27 +22,6 @@ namespace Book_store_1_.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Book_store_1_.Models.Admin", b =>
-                {
-                    b.Property<int>("AdminId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"));
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AdminId");
-
-                    b.ToTable("Admin");
-                });
-
             modelBuilder.Entity("Book_store_1_.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -54,6 +33,11 @@ namespace Book_store_1_.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -116,6 +100,10 @@ namespace Book_store_1_.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Book", b =>
@@ -162,6 +150,9 @@ namespace Book_store_1_.Migrations
                     b.Property<DateTime>("BorrowDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MemberId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
@@ -172,7 +163,7 @@ namespace Book_store_1_.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("MemberId");
 
                     b.ToTable("BorrowedBooks");
                 });
@@ -192,33 +183,6 @@ namespace Book_store_1_.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("Book_store_1_.Models.Member", b =>
-                {
-                    b.Property<int>("MemberId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MemberId"));
-
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberOfborrowedBooks")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MemberId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Member");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -363,6 +327,53 @@ namespace Book_store_1_.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Book_store_1_.Models.Admin", b =>
+                {
+                    b.HasBaseType("Book_store_1_.Models.ApplicationUser");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("UserId1");
+
+                    b.HasDiscriminator().HasValue("Admin");
+                });
+
+            modelBuilder.Entity("Book_store_1_.Models.Member", b =>
+                {
+                    b.HasBaseType("Book_store_1_.Models.ApplicationUser");
+
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfborrowedBooks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("UserId")
+                                .HasColumnName("Member_UserId");
+
+                            t.Property("UserId1")
+                                .HasColumnName("Member_UserId1");
+                        });
+
+                    b.HasDiscriminator().HasValue("Member");
+                });
+
             modelBuilder.Entity("ApplicationRole", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
@@ -391,20 +402,11 @@ namespace Book_store_1_.Migrations
 
                     b.HasOne("Book_store_1_.Models.Member", "Member")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MemberId");
 
                     b.Navigation("Book");
 
                     b.Navigation("Member");
-                });
-
-            modelBuilder.Entity("Book_store_1_.Models.Member", b =>
-                {
-                    b.HasOne("Book_store_1_.Models.Book", null)
-                        .WithMany("Members")
-                        .HasForeignKey("BookId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -456,6 +458,35 @@ namespace Book_store_1_.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Book_store_1_.Models.Admin", b =>
+                {
+                    b.HasOne("Book_store_1_.Models.ApplicationUser", "User")
+                        .WithMany("Admin")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Book_store_1_.Models.Member", b =>
+                {
+                    b.HasOne("Book_store_1_.Models.Book", null)
+                        .WithMany("Members")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("Book_store_1_.Models.ApplicationUser", "User")
+                        .WithMany("Member")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Book_store_1_.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Admin");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Book_store_1_.Models.Book", b =>

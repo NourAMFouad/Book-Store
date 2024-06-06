@@ -16,17 +16,16 @@ namespace Book_store_1_.Controllers
     {
             //  1- adding Repository pattern 
             private readonly IBaseRepository<Book, Bookdto> _BooksRepository;
-            // adding CategoryRepository
-            private readonly IBaseRepository<Category, Categorydto> _CategoryRepository; 
+            
             private readonly IMapper _mapper;
 
 
 
             // 2- Repository
-            public BooksController(IBaseRepository<Book, Bookdto> bookRepository, IBaseRepository<Category, Categorydto> categoryRepository , IMapper mapper){
+            public BooksController(IBaseRepository<Book, Bookdto> bookRepository, IMapper mapper){
                 _BooksRepository = bookRepository;
                 _mapper = mapper;
-                _CategoryRepository = categoryRepository;
+            
             }
 
 
@@ -88,16 +87,18 @@ namespace Book_store_1_.Controllers
                 }
 
                 [HttpPost("AddNewBook")]
-                [Authorize]
+                [Authorize(Roles = "Admin")]
                 public IActionResult AddNewBook([FromBody] Bookdto dto){
                     
                     var identity = HttpContext.User.Identity as ClaimsIdentity;
                     var userId = identity.FindFirst("uid");
                     if (userId == null){
-                        return BadRequest("Unothorized");
+                        return BadRequest("Unothorized, Only Admin able to add books:)");
                     }
                     
+                    
                     _BooksRepository.Add(dto);
+                    
                     return Ok();
                 }
             
@@ -119,18 +120,19 @@ namespace Book_store_1_.Controllers
                 }
 
 
-        [HttpPut("BookById/{id}")]
-        public IActionResult UpdateBook([FromBody] Bookdto dto, int id)
-        {
-            // Check if book exists in database
-            // var book = _BooksRepository.GetById(id);
+                [HttpPut("BookById/{id}")]
+                [Authorize(Roles ="Admin")]
+                public IActionResult UpdateBook([FromBody] Bookdto dto, int id)
+                {
+                    // Check if book exists in database
+                    // var book = _BooksRepository.GetById(id);
 
-                dto.BookId = id;
-                _BooksRepository.Update(dto);
-                return Ok();
-        
-        
-        }
+                        dto.BookId = id;
+                        _BooksRepository.Update(dto);
+                        return Ok();
+                
+                
+                }
     }
       
 }

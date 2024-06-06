@@ -60,7 +60,7 @@ namespace Book_store_1_.Controllers
             }
             
   
-            int borrowed_books = _memberRepository.GetSpecificValue(m => m.MemberId == memberId, n=> n.NumberOfborrowedBooks);
+            int borrowed_books = _memberRepository.GetSpecificValue(m => m.UserId  == memberId, n=> n.NumberOfborrowedBooks);
 
             if ( borrowed_books <= 5 ){
             
@@ -71,7 +71,7 @@ namespace Book_store_1_.Controllers
 
                 if (book != null && numberOfBooks > 0 ){
 
-                    _memberRepository.UpdateSpecificField(m => m.MemberId == memberId, n=> n.NumberOfborrowedBooks, (member, borrowed_books) => member.NumberOfborrowedBooks += 1 );
+                    _memberRepository.UpdateSpecificField(m => m.UserId == memberId, n=> n.NumberOfborrowedBooks, (member, borrowed_books) => member.NumberOfborrowedBooks += 1 );
                    
                     _bookRepository.UpdateSpecificField( b => b.BookId == bookId, n => n.NumberOfCopies, (book, numberOfCopies) => book.NumberOfCopies -= 1);
 
@@ -114,7 +114,7 @@ namespace Book_store_1_.Controllers
                     (book, NumberOfCopies) => book.NumberOfCopies +=1);
             
                 
-                _memberRepository.UpdateSpecificField( m => m.MemberId == borrowedbook.UserId,
+                _memberRepository.UpdateSpecificField( m => m.UserId == borrowedbook.UserId,
                     m => m.NumberOfborrowedBooks, 
                      (memeber, NumberOfborrowedBooks) => member.NumberOfborrowedBooks -=1);
 

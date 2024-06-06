@@ -14,8 +14,8 @@ namespace Book_store_1_.Controllers
             _authService = authService;
         }
 
-         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(ApplicationUserdto model)
+         [HttpPost("Admin Registeration")]
+        public async Task<IActionResult> RegisterAdminAsync(ApplicationUserdto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -29,7 +29,7 @@ namespace Book_store_1_.Controllers
                 Email = model.Email,
                 PasswordHash = model.Password
             };
-            var result = await _authService.RegisterAsync(model);
+            var result = await _authService.RegisterAdminAsync(model);
 
             if (result == null ){
                 return BadRequest();
@@ -38,6 +38,32 @@ namespace Book_store_1_.Controllers
             return Ok(result);
         }
 
+
+        [HttpPost("Member Registeration")]
+        public async Task<IActionResult> RegisterMemberAsync(ApplicationUserdto model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            
+            var applicationUser = new ApplicationUser
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                UserName = model.Username,
+                Email = model.Email,
+                PasswordHash = model.Password
+            };
+            var result = await _authService.RegisterMemberAsync(model);
+
+            if (result == null ){
+                return BadRequest();
+            }
+
+            return Ok(result);
+        }
+
+        
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(Logindto model){
             if (!ModelState.IsValid){

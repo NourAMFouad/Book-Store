@@ -2,16 +2,22 @@
 
 namespace Book_store_1_.Models
 {
-    public class Member
+    public class Member : ApplicationUser
     {
-        [Key]
-        public int MemberId{set; get;}
+        [Required]
+     
+        public int UserId { get; set; }
 
-    
-        public string? Username{set; get;}
-       
-        public string? Password{set; get;}
-
+        public ApplicationUser  User { get; set; }
+        
         public ushort NumberOfborrowedBooks{set; get;}
+
+
+        // [Key]
+        // public int MemberId{set; get;}
+
+        // public string? Username{set; get;}
+       
+        // public string? Password{set; get;}
     }
 }

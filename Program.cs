@@ -36,7 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // register repositories with specific model and dto  
 // registering of repositorues, meaning a new instance will be created per request. This allows for proper management of resources and dependencies
 // within each request's scope.
-builder.Services.AddScoped(typeof(IBaseRepository<Book, Bookdto>),typeof(BaseRepository<Book, Bookdto>));
+builder.Services.AddScoped(typeof(IBaseRepository<Book, Bookdto>), typeof(BaseRepository<Book, Bookdto>));
 
 builder.Services.AddScoped(typeof(IBaseRepository<Category, Categorydto>),typeof(BaseRepository<Category, Categorydto>));
 
@@ -115,8 +115,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
 /*
 Additional notes 
 // builder: An instance of WebApplicationBuilder used to configure and build the web application.

@@ -1,7 +1,7 @@
 using Book_store_1_.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
+
 
 
 
@@ -26,5 +26,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
      public DbSet<Member> Member {set; get;}
      public DbSet<Book> Book {set; get;}
      public DbSet<BorrowedBooks> BorrowedBooks {set; get;}
+
+    internal object Set<T, Dto>()
+    {
+        throw new NotImplementedException();
+    }
 }
 

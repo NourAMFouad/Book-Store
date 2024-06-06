@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {}
+    "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {}
   },
   "projects": {
-    "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {
+    "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
+        "projectUniqueName": "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
         "projectName": "Book_store(1)",
-        "projectPath": "e:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
+        "projectPath": "E:\\C#_projects\\Book_store(1)\\Book_store(1).csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "e:\\C#_projects\\Book_store(1)\\obj\\",
+        "outputPath": "E:\\C#_projects\\Book_store(1)\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -76,6 +76,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.4, )"
+            },
+            "SQLite": {
+              "target": "Package",
+              "version": "[3.13.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -14,6 +14,7 @@ public interface IBaseRepository<T, Dto> where T : class where Dto : class
     List<T> Find(Expression<Func<T,bool>> match);
     
     Dto Add(Dto dto);
+    T Add(T t);
 
     void Update(Dto dto);
 

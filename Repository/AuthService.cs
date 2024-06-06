@@ -20,7 +20,7 @@ namespace Book_store_1_.Repository
             _jwt = jwt.Value;
          } 
 
-          public async Task<RegistrationResult> RegisterAsync(ApplicationUserdto model)
+          public async Task<RegistrationResult> RegisterAdminAsync(ApplicationUserdto model)
         {
             if (await _userManager.FindByEmailAsync(model.Email) is not null)
                  return new RegistrationResult("Email is already registered!");
@@ -50,6 +50,51 @@ namespace Book_store_1_.Repository
             }
 
            var addRole = await _userManager.AddToRoleAsync(user, "Admin");
+
+            // Check if adding user to role was successful
+        if (!addRole.Succeeded)
+        {
+            var errors = string.Empty;
+            foreach (var error in addRole.Errors)
+                errors += $"{error.Description},";
+            return new RegistrationResult(errors);
+        }
+
+        // Return success message and the user object
+        return new RegistrationResult("User registered successfully!");
+        }
+
+
+          public async Task<RegistrationResult> RegisterMemberAsync(ApplicationUserdto model)
+        {
+            if (await _userManager.FindByEmailAsync(model.Email) is not null)
+                 return new RegistrationResult("Email is already registered!");
+
+
+            if (await _userManager.FindByNameAsync(model.Username) is not null)
+                 return new RegistrationResult("Username is already registered!");
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Username,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new RegistrationResult(errors);
+            }
+
+           var addRole = await _userManager.AddToRoleAsync(user, "User");
 
             // Check if adding user to role was successful
         if (!addRole.Succeeded)

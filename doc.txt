@@ -1,4 +1,46 @@
+{
+  "ConnectionStrings": 
+  {"DefaultConnection":"Server=DESKTOP-UFHRLD4\\SQLEXPRESS;Database=Book_store;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;Max Pool Size=100;Min Pool Size=10;"},
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "JWT":
+  {
+    "Key": "QD2e4b2/K6FcnxB0AYOAFyh3JAzSVEc9ZXY/YR+L//s=",
+    "Issuer":"Issuer",
+    "Audience": "SecureApiUser",
+    "DurationInDays" :30 
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // questions 
+
+
+
+
+
+
 why put request edit id and add new data in database , i need just to edit not to add new data in database 
 controllers
 [HttpPut("BookById/{id}")]

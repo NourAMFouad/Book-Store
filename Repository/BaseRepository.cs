@@ -71,6 +71,15 @@ namespace Book_store_1_.Repository
             return _mapper.Map<Dto>(entity);
         }
 
+   public T Add(T t)
+        {
+          
+            var entity = _mapper.Map<T>(t);
+            _context.Set<T>().Add(entity);
+            _context.SaveChanges();
+            
+            return _mapper.Map<T>(entity);
+        }
         
         public void Delete(T t)
         {
@@ -117,5 +126,7 @@ namespace Book_store_1_.Repository
             _context.SaveChanges();
             return true;
         }
+
+      
     }
 }

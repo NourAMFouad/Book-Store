@@ -9,5 +9,9 @@ namespace Book_store_1_.Models
 
         [Required, MaxLength(50)]
         public string? LastName { get; set; }
+
+        public ICollection<Admin>? Admin {set; get;}
+        public ICollection<Member>? Member{set; get; }
+        
     }
 }
