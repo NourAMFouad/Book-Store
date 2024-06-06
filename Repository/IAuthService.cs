@@ -12,5 +12,11 @@ namespace Book_store_1_.Repository
 
         Task<AuthModel> LoginAsync(Logindto model);
 
+        Task<List<ApplicationUser>> GetAdminUserAsync();
+
+        Task<List<ApplicationUser>> GetMemberUserAsync();
+
+
+
     }
 }

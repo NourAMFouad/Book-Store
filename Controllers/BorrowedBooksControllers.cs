@@ -3,6 +3,7 @@ using AutoMapper;
 using Book_store_1_.DTOs;
 using Book_store_1_.Models;
 using Book_store_1_.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Book_store_1_.Controllers
 {
@@ -37,6 +38,7 @@ namespace Book_store_1_.Controllers
         
         // only Admins able to see all borrowed books   pending 
         [HttpGet("AllBooks")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllBorrowedBooks()
         {
                 

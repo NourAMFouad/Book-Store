@@ -14,7 +14,8 @@ namespace Book_store_1_.Controllers
         private readonly ApplicationDbContext _context;
 
         private readonly IBaseRepository<Member, Memberdto> _memberRepository;
-
+        
+        
         private readonly IMapper _mapper;
         
         // constructor 

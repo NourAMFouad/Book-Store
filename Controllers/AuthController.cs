@@ -75,5 +75,17 @@ namespace Book_store_1_.Controllers
         }
         
 
+        [HttpGet("Admins")]
+        public async Task<IActionResult> GetAdmin(){
+            var admins = await _authService.GetAdminUserAsync();
+            return Ok(admins);
+        }
+
+        [HttpGet("Members")]
+         public async Task<IActionResult> GetMember(){
+            var admins = await _authService.GetMemberUserAsync();
+            return Ok(admins);
+        }
+
     }
 }

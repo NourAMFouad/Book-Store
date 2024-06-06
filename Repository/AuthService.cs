@@ -170,5 +170,13 @@ namespace Book_store_1_.Repository
             return jwtSecurityToken;
         }
 
+        
+        public async Task<List<ApplicationUser>> GetAdminUserAsync(){
+            return (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("Admin");
+        }
+
+        public async Task<List<ApplicationUser>> GetMemberUserAsync(){
+            return (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("User");
+        }
     }
 }
