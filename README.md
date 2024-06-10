@@ -4,6 +4,7 @@ Include:
 - POST/ Admin Registeration/
 - POST/ Member Registeration/  
 - POST/ login/
+- POST/ logout/
 - Get/ Admins    : to display all registered admins
 - Get/ Members    : to display all registered Members 
 
