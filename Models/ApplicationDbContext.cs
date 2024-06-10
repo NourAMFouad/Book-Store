@@ -19,17 +19,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
 
      public DbSet<ApplicationRole> AspNetRoles { get; set; }
-
      // adding property 
      public DbSet<Category> Category {set; get;}
      public DbSet<Admin> Admin {set; get;}
      public DbSet<Member> Member {set; get;}
      public DbSet<Book> Book {set; get;}
      public DbSet<BorrowedBooks> BorrowedBooks {set; get;}
+    
+     public DbSet<BlacklistToken> BlacklistTokens {get; set;}
 
-    internal object Set<T, Dto>()
+
+
+    protected override void OnModelCreating (ModelBuilder modelBuilder)
     {
-        throw new NotImplementedException();
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ApplicationUser>()
+        .Property(n => n.FullName)
+        .HasComputedColumnSql("[FirstName]+ ' ' +[LastName]");
     }
 }
 

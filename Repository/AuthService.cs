@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Book_store_1_.Controllers;
 using Book_store_1_.DTOs;
 using Book_store_1_.Helpers;
 using Book_store_1_.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,9 +17,14 @@ namespace Book_store_1_.Repository
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JWT _jwt;
 
-         public AuthService (UserManager<ApplicationUser> userManager, IOptions<JWT> jwt){
+        private readonly ApplicationDbContext _context;
+
+
+
+         public AuthService (UserManager<ApplicationUser> userManager, IOptions<JWT> jwt, ApplicationDbContext context){
             _userManager = userManager;
             _jwt = jwt.Value;
+            _context = context;
          } 
 
           public async Task<RegistrationResult> RegisterAdminAsync(ApplicationUserdto model)
@@ -134,7 +141,7 @@ namespace Book_store_1_.Repository
 
           
         }
-        
+      
 
 
         // create token 
@@ -169,8 +176,26 @@ namespace Book_store_1_.Repository
 
             return jwtSecurityToken;
         }
+ 
+        // for logout endpoint  
+        public async Task AddTokenInBlacklistAsync(BlacklistTokendto dto){
+            var blockToken = new BlacklistToken 
+            {
+                Token = dto.Token,
+                ExpiryDate = dto.ExpiryDate
+            };
 
-        
+            _context.BlacklistTokens.AddAsync(blockToken);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<bool> IsTokeninBlacklist(string token)
+        {
+            return await _context.BlacklistTokens.AnyAsync(t => t.Token == token);
+        }
+
+
         public async Task<List<ApplicationUser>> GetAdminUserAsync(){
             return (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("Admin");
         }
@@ -178,5 +203,7 @@ namespace Book_store_1_.Repository
         public async Task<List<ApplicationUser>> GetMemberUserAsync(){
             return (List<ApplicationUser>)await _userManager.GetUsersInRoleAsync("User");
         }
+
+    
     }
 }

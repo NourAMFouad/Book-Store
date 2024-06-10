@@ -74,6 +74,28 @@ namespace Book_store_1_.Controllers
             return Ok(result);
         }
         
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogoutAsync(){
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer", "");
+            var date = DateTime.UtcNow.AddDays(7);
+
+            var dto = new BlacklistTokendto 
+            {
+                Token = token,
+                ExpiryDate=date
+            };
+
+            await _authService.AddTokenInBlacklistAsync(dto);
+            
+            bool tokeninblacklist =await _authService.IsTokeninBlacklist(token);
+
+            if (tokeninblacklist){
+               return Ok("Good Bye :)");
+            }else {
+                return BadRequest();
+            }
+        }
+
 
         [HttpGet("Admins")]
         public async Task<IActionResult> GetAdmin(){
