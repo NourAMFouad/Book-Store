@@ -51,6 +51,14 @@ namespace Book_store_1_.Repository
         }
 
 
+        public IEnumerable<T> GetAllInPages(PagesParameter pagesParameter){
+            return FindAll()
+                .Skip((pagesParameter.PageNumber -1) * pagesParameter.PageSize)
+                .Take(pagesParameter.PageSize)
+                .ToList();
+        }
+
+
         public List<T> Find(Expression<Func<T, bool>> match){
 
             IQueryable<T> query = _context.Set<T>();
@@ -128,5 +136,12 @@ namespace Book_store_1_.Repository
         }
 
       
+
+      public IQueryable<T> FindAll()
+        {
+            return this._context.Set<T>();
+        }
+
+
     }
 }

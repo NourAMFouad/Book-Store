@@ -5,7 +5,7 @@ using Book_store_1_.Repository;
 
 namespace Book_store_1_.Controllers
 {
-    public class AuthController :ControllerBase 
+    public class AuthController : ControllerBase 
     {
        private readonly IAuthService _authService;
 
@@ -90,7 +90,7 @@ namespace Book_store_1_.Controllers
             bool tokeninblacklist =await _authService.IsTokeninBlacklist(token);
 
             if (tokeninblacklist){
-               return Ok("Good Bye :)");
+               return Ok("Goodbye :)");
             }else {
                 return BadRequest();
             }

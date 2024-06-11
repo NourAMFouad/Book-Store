@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using System.Linq.Expressions;
+using Book_store_1_.DTOs;
 using Book_store_1_.Models;
 
 namespace Book_store_1_.Repository{
@@ -9,7 +11,11 @@ public interface IBaseRepository<T, Dto> where T : class where Dto : class
     T? GetById(int id);
     T? GetById(byte id);
 
-   List<Dto> GetAll();
+    List<Dto> GetAll();
+
+    // to adding pagination concept in getall function 
+    IEnumerable<T> GetAllInPages(PagesParameter pagesParameter);
+
     
     List<T> Find(Expression<Func<T,bool>> match);
     

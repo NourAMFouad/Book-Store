@@ -33,6 +33,21 @@ namespace Book_store_1_.Controllers
         }
 
 
+
+
+        // endpoint: display categories with pagination concept
+        [HttpGet("Page")]
+        public IActionResult GetAllInPaging([FromQuery] PagesParameter parameter)
+        {    
+            var categories =  _categoryRepository.GetAllInPages(parameter);
+            return Ok(categories);
+        }
+
+
+
+        
+
+
         // endpoint: to take category name and add new category
         [HttpPost]
         public IActionResult CreateNewCategory(Categorydto categoryDto,string categName){
