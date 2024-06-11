@@ -34,10 +34,11 @@ Include 3 endpoints
 
 # Category
 Include 4 endpoints 
-- GET/  api/Category  :  To list and display all categories from database
-- POST/  api/Category :  To allow user to add new Category in database
-- PUT/  api/Category  :  To edit specific category by adding Category_id
-- DElETE  /  api/Category/{id}   : To delete Category by adding category_id
+- GET/  api/Category  :  To list and display all categories from database.
+- GET/  api/Category/Page :   To display categories as list.
+- POST/  api/Category :  To allow user to add new Category in database.
+- PUT/  api/Category  :  To edit specific category by adding Category_id.
+- DElETE  /  api/Category/{id}   : To delete Category by adding category_i.d
 
 
 # Members
